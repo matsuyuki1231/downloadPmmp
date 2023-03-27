@@ -32,14 +32,14 @@ if ($isBinary && is_dir($currentDir. DIRECTORY_SEPARATOR. "bin")) {
     rmTree($currentDir. DIRECTORY_SEPARATOR. "bin");
     echo PHP_EOL. "Ended removing legacy binary...";
 }
-echo PHP_EOL. "Started downloading ". ($isBinary?"PHP binary":"PocketMine-MP src"). " ". $releases[$version]["name"]. "...";
+echo PHP_EOL. "Started downloading ". ($isBinary?"PHP binary":$releases[$version]["assets"][$type]["name"]. " of"). " ". $releases[$version]["name"]. "...";
 $bin = file_get_contents($releases[$version]["assets"][$type]["browser_download_url"], false, $ctx);
-file_put_contents($currentDir. DIRECTORY_SEPARATOR. ($isBinary?"bin.zip":"PocketMine-MP.phar"), $bin);
+file_put_contents($currentDir. DIRECTORY_SEPARATOR. ($isBinary?"bin.zip":$releases[$version]["assets"][$type]["name"]), $bin);
 echo PHP_EOL. "Ended downloading";
 if ($isBinary) {
     echo PHP_EOL. "Started zip extracting...";
     $zip = new ZipArchive();
-    echo (($zip->open($currentDir. DIRECTORY_SEPARATOR. "bin.zip") && $zip->extractTo("."))?"Succeed":"Failed")
+    echo PHP_EOL. (($zip->open($currentDir. DIRECTORY_SEPARATOR. "bin.zip") && $zip->extractTo("."))?"Succeed":"Failed")
         . "extracting.";
     echo PHP_EOL. "Remove zip file? (y/n)";
     if (in_array(substr(fgets(STDIN), 0, 1), ["y", "1"])) {
